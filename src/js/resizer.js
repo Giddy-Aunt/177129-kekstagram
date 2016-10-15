@@ -92,11 +92,6 @@
       this._ctx.lineWidth = 6;
       // Цвет обводки.
       this._ctx.strokeStyle = '#ffe753';
-      // Размер штрихов. Первый элемент массива задает длину штриха, второй
-      // расстояние между соседними штрихами.
-      //this._ctx.setLineDash([15, 10]);
-      // Смещение первого штриха от начала линии.
-      //this._ctx.lineDashOffset = 7;
 
       // Сохранение состояния канваса.
       this._ctx.save();
@@ -113,42 +108,10 @@
 
       // Отрисовка прямоугольника, обозначающего область изображения после
       // кадрирования. Координаты задаются от центра.
-      /*this._ctx.strokeRect(
-          (-this._resizeConstraint.side / 2) - this._ctx.lineWidth / 2,
-          (-this._resizeConstraint.side / 2) - this._ctx.lineWidth / 2,
-          this._resizeConstraint.side - this._ctx.lineWidth / 2,
-          this._resizeConstraint.side - this._ctx.lineWidth / 2);*/
-
-      //Отрисовка рамки точками.
-      /*var dotRadius = 5;
-      var initialDotX = -this._resizeConstraint.side / 2 + dotRadius;
-      var initialDotY = -this._resizeConstraint.side / 2 + dotRadius;
-      var dotX = initialDotX;
-      var dotY = initialDotY;
-      this._ctx.fillStyle = '#ffe753';
-      this._ctx.beginPath();
-      this._ctx.moveTo(-initialDotY, -initialDotY);
-      this._ctx.arc(-initialDotY, -initialDotY, dotRadius, 0, Math.PI * 2, true);
-      while((dotX < this._resizeConstraint.side / 2) && (dotX < this._resizeConstraint.side / 2 - 2 * dotRadius)) {
-        this._ctx.moveTo(dotX, initialDotY);
-        this._ctx.arc(dotX, initialDotY, dotRadius, 0, Math.PI * 2, true);
-        this._ctx.moveTo(dotX, -initialDotY);
-        this._ctx.arc(dotX, -initialDotY, dotRadius, 0, Math.PI * 2, true);
-        this._ctx.moveTo(initialDotX, dotY);
-        this._ctx.arc(initialDotX, dotY, dotRadius, 0, Math.PI * 2, true);
-        this._ctx.moveTo(-initialDotX, dotY);
-        this._ctx.arc(-initialDotX, dotY, dotRadius, 0, Math.PI * 2, true);
-        dotX += 3 * dotRadius;
-        dotY += 3 * dotRadius;
-      }
-      this._ctx.closePath();
-      this._ctx.fill();*/
-
-      //Отрисовка рамки зигзагом.
+     //Отрисовка рамки зигзагом.
       var step = (this._resizeConstraint.side - this._ctx.lineWidth) / 48;
       var x = -this._resizeConstraint.side / 2 + this._ctx.lineWidth / 2;
       var y = -this._resizeConstraint.side / 2 + this._ctx.lineWidth / 2;
-
       this._ctx.beginPath();
       this._ctx.moveTo(x, y + step);
       for (var i = 1; i < this._resizeConstraint.side / 2 / step * 4; i++) {
@@ -163,10 +126,9 @@
         }
       }
       this._ctx.stroke();
+
       //Отрисовка черного полупрозрачного слоя вокруг области кадрирования.
-
       this._ctx.fillStyle = 'rgba(0, 0, 0, 0.8)';
-
       this._ctx.beginPath();
       this._ctx.moveTo((-this._container.width / 2), (-this._container.height / 2));
       this._ctx.lineTo((this._container.width / 2), (-this._container.height / 2));
@@ -180,7 +142,6 @@
       this._ctx.fill('evenodd');
 
       //Вывод размеров изображения.
-
       var PADDING = 10;
       var FONT_RATIO = 0.05;
       var fontSize = this._resizeConstraint.side * FONT_RATIO;
