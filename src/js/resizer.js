@@ -89,9 +89,9 @@
       // чего-либо с другой обводкой.
 
       // Толщина линии.
-      //this._ctx.lineWidth = 6;
+      this._ctx.lineWidth = 6;
       // Цвет обводки.
-      //this._ctx.strokeStyle = '#ffe753';
+      this._ctx.strokeStyle = '#ffe753';
       // Размер штрихов. Первый элемент массива задает длину штриха, второй
       // расстояние между соседними штрихами.
       //this._ctx.setLineDash([15, 10]);
@@ -120,7 +120,7 @@
           this._resizeConstraint.side - this._ctx.lineWidth / 2);*/
 
       //Отрисовка рамки точками.
-      var dotRadius = 5;
+      /*var dotRadius = 5;
       var initialDotX = -this._resizeConstraint.side / 2 + dotRadius;
       var initialDotY = -this._resizeConstraint.side / 2 + dotRadius;
       var dotX = initialDotX;
@@ -142,8 +142,27 @@
         dotY += 3 * dotRadius;
       }
       this._ctx.closePath();
-      this._ctx.fill();
+      this._ctx.fill();*/
 
+      //Отрисовка рамки зигзагом.
+      var step = (this._resizeConstraint.side - this._ctx.lineWidth) / 48;
+      var x = -this._resizeConstraint.side / 2 + this._ctx.lineWidth / 2;
+      var y = -this._resizeConstraint.side / 2 + this._ctx.lineWidth / 2;
+
+      this._ctx.beginPath();
+      this._ctx.moveTo(x, y + step);
+      for (var i = 1; i < this._resizeConstraint.side / 2 / step * 4; i++) {
+        x += step;
+        this._ctx.lineTo(x, y);
+        x += step;
+        this._ctx.lineTo(x, y + step);
+        if(x > this._resizeConstraint.side / 2 - step) {
+          this._ctx.rotate(90 * Math.PI / 180);
+          x = -this._resizeConstraint.side / 2 + this._ctx.lineWidth / 2;
+          this._ctx.moveTo(x, y + step);
+        }
+      }
+      this._ctx.stroke();
       //Отрисовка черного полупрозрачного слоя вокруг области кадрирования.
 
       this._ctx.fillStyle = 'rgba(0, 0, 0, 0.8)';
