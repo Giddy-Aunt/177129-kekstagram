@@ -71,8 +71,21 @@
    * Проверяет, валидны ли данные, в форме кадрирования.
    * @return {boolean}
    */
-  var resizeFormIsValid = function() {
-    return true;
+
+  var resizeX = document.querySelector('#resize-x');
+  var resizeY = document.querySelector('#resize-y');
+  var resizeSize = document.querySelector('#resize-size');
+  var resizeSubmit = document.querySelector('#resize-fwd');
+  resizeX.min = 0;
+  resizeY.min = 0;
+
+  var resizeFormIsValid = function(x, y, side) {
+    resizeSubmit.setAttribute('disabled', 'disabled');
+    if (x >= 0 && y >= 0 && x + side <= currentResizer._image.naturalWidth && y + side <= currentResizer._image.naturalHeight) {
+      resizeSubmit.removeAttribute('disabled');
+      return true;
+    }
+    return false;
   };
 
   /**
@@ -86,6 +99,10 @@
    * @type {HTMLFormElement}
    */
   var resizeForm = document.forms['upload-resize'];
+
+  resizeForm.oninput = function() {
+    resizeFormIsValid(resizeY.value, resizeY.value, resizeSize.value);
+  };
 
   /**
    * Форма добавления фильтра.
@@ -193,7 +210,7 @@
   resizeForm.onsubmit = function(evt) {
     evt.preventDefault();
 
-    if (resizeFormIsValid()) {
+    if (resizeFormIsValid(resizeY.value, resizeY.value, resizeSize.value)) {
       var image = currentResizer.exportImage().src;
 
       var thumbnails = filterForm.querySelectorAll('.upload-filter-preview');
@@ -260,6 +277,7 @@
     // состояние или просто перезаписывать.
     filterImage.className = 'filter-image-preview ' + filterMap[selectedFilter];
   };
+
 
   cleanupResizer();
   updateBackground();
