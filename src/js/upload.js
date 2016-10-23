@@ -283,13 +283,14 @@
    */
 
   var UPLOAD_FILTER_COOKIE = 'upload-filter';
+  var cookies = window.Cookies;
 
   filterForm.onsubmit = function(evt) {
     evt.preventDefault();
 
     var validityPeriod = getDaysSinceLastGracesBirthday();
     var uploadFilterCookieValue = getSelectedFilter();
-    Cookies.set(UPLOAD_FILTER_COOKIE, uploadFilterCookieValue, {expires: validityPeriod});
+    cookies.set(UPLOAD_FILTER_COOKIE, uploadFilterCookieValue, {expires: validityPeriod});
 
     cleanupResizer();
     updateBackground();
@@ -301,7 +302,7 @@
   //Устанавливает фильтр, записанный в cookies, как фильтр по умолчанию.
 
   var setDefaultFilter = function() {
-    var defaultFilter = Cookies.get(UPLOAD_FILTER_COOKIE);
+    var defaultFilter = cookies.get(UPLOAD_FILTER_COOKIE);
     if(defaultFilter) {
       filterImage.className = 'filter-image-preview ' + defaultFilter;
       document.getElementById('upload-' + defaultFilter).checked = true;
