@@ -12,7 +12,7 @@ var getPhoto = require('./picture');
   var template = document.getElementById('picture-template');
   var templateContainer = template.content ? template.content : template;
 
-   var renderPhotos = function(data) {
+  var renderPhotos = function(data) {
     data.forEach(function(picture) {
       container.appendChild(getPhoto(picture, templateContainer, IMAGE_LOAD_TIMEOUT));
     });

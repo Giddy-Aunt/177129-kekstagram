@@ -7,8 +7,8 @@
 
 'use strict';
 
-  var browserCookies = require('./lib/js.cookie');
-  var utils = require('./utils');
+var browserCookies = require('./lib/js.cookie');
+var utils = require('./utils');
 
 (function() {
   /** @enum {string} */
