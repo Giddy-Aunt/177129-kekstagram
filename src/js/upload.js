@@ -7,6 +7,9 @@
 
 'use strict';
 
+var browserCookies = require('./lib/js.cookie');
+var utils = require('./utils');
+
 (function() {
   /** @enum {string} */
   var FileType = {
@@ -259,23 +262,6 @@
     return filterMap[selectedFilter];
   };
 
-  //Считает, сколько прошло дней с последнего дня рождения Грейс Хоппер.
-
-  var getDaysSinceLastGracesBirthday = function() {
-    var GRACES_BIRTHDAY = new Date(1906, 11, 9);
-    var today = new Date();
-    var day = GRACES_BIRTHDAY.getDate();
-    var month = GRACES_BIRTHDAY.getMonth();
-    var year;
-    if (today.getMonth() === month && today.getDate() > day ) {
-      year = today.getFullYear();
-    } else {
-      year = today.getFullYear() - 1;
-    }
-    var lastGracesBirthday = new Date(year, month, day);
-    return Math.floor((today - lastGracesBirthday) / 86400000);
-  };
-
     /**
    * Отправка формы фильтра. Возвращает в начальное состояние, предварительно
    * записав сохраненный фильтр в cookie.
@@ -283,14 +269,13 @@
    */
 
   var UPLOAD_FILTER_COOKIE = 'upload-filter';
-  var cookies = window.Cookies;
 
   filterForm.onsubmit = function(evt) {
     evt.preventDefault();
 
-    var validityPeriod = getDaysSinceLastGracesBirthday();
+    var validityPeriod = utils.getDaysSinceLastGracesBirthday();
     var uploadFilterCookieValue = getSelectedFilter();
-    cookies.set(UPLOAD_FILTER_COOKIE, uploadFilterCookieValue, {expires: validityPeriod});
+    browserCookies.set(UPLOAD_FILTER_COOKIE, uploadFilterCookieValue, {expires: validityPeriod});
 
     cleanupResizer();
     updateBackground();
@@ -302,7 +287,7 @@
   //Устанавливает фильтр, записанный в cookies, как фильтр по умолчанию.
 
   var setDefaultFilter = function() {
-    var defaultFilter = cookies.get(UPLOAD_FILTER_COOKIE);
+    var defaultFilter = browserCookies.get(UPLOAD_FILTER_COOKIE);
     if(defaultFilter) {
       filterImage.className = 'filter-image-preview ' + defaultFilter;
       document.getElementById('upload-' + defaultFilter).checked = true;
